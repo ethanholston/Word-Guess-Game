@@ -1,0 +1,74 @@
+<!DOCTYPE html> 
+
+<head>
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+
+<body>
+    <script>
+    
+    // VARIABLES
+    var wins = 0;
+    var guessesLeft = 8;
+    var answerPool = ["Tom Brady", "Andrew Luck", "Aaron Rodgers", "Odell Beckham"]
+    var alphabet = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]
+    var emptyAnswer;
+    // FUNCTIONS
+    function getNewAnswer() {
+        var answer = answerPool[Math.floor(Math.random() * answerPool.length)]
+        return answer;
+    }
+    function guess(){
+        var keyPress= event.key;
+        if(answer.indexOf(keyPress) >= 0){
+
+        }
+    }
+    var answer = getNewAnswer();
+    function emptyAnswer(){
+        var emptyAnswerArray = [];
+        var emptyAnswerStr = "";
+        for (var i = 0; i < answer.length; i++){
+            if(alphabet.indexOf(answer[i]) >= 0){
+                emptyAnswerStr += "_";
+            } else{
+                emptyAnswerStr += " ";
+            }
+        }
+        return emptyAnswerStr;
+    }
+   
+    console.log(answer);
+    console.log(emptyAnswer());
+    // function newGame(){
+        
+    // }
+    
+
+    //MAIN PROCESS
+    var answer = getNewAnswer();
+    var emptyAnswerStr = emptyAnswer();
+    if (guessesLeft > 0){
+        document.onkeyup = function(event) {
+            keyPress = event.key;
+            for (i=0; i < answer.length; i++){
+                if(keyPress == answer[i]){
+                    emptyAnswerStr[i] = keyPress;
+                    console.log(emptyAnswerStr);
+                }
+                else{
+                    guessesLeft--;
+                }
+            }
+        }
+    }
+    else{
+        function gameOver(){
+
+        }
+    }
+        
+    
+    
+    </script>
+</body>>
