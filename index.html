@@ -9,64 +9,121 @@
     
     // VARIABLES
     var wins = 0;
-    var guessesLeft = 8;
     var answerPool = ["Tom Brady", "Andrew Luck", "Aaron Rodgers", "Odell Beckham"]
     var alphabet = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]
     var emptyAnswer;
+    var guessesLeft;
+    var lettersGuessed;
+    var emptyAnsArr = [];
     // FUNCTIONS
     function getNewAnswer() {
         var answer = answerPool[Math.floor(Math.random() * answerPool.length)]
         return answer;
     }
-    function guess(){
-        var keyPress= event.key;
-        if(answer.indexOf(keyPress) >= 0){
 
-        }
-    }
+// Pull answer from the pool of available options
     var answer = getNewAnswer();
-    function emptyAnswer(){
-        var emptyAnswerArray = [];
-        var emptyAnswerStr = "";
+    //function to create an empty string with _ instead of letters, preserving the space between first and last name
+    function emptyAns(){
+        // var emptyAnsArr = [];
         for (var i = 0; i < answer.length; i++){
             if(alphabet.indexOf(answer[i]) >= 0){
-                emptyAnswerStr += "_";
+                emptyAnsArr.push("_");
             } else{
-                emptyAnswerStr += " ";
+                emptyAnsArr.push(" ");
             }
         }
-        return emptyAnswerStr;
     }
+
+//     function setCharAt(str,index,chr) {
+// 	    if(index > str.length - 1) {return str;}
+// 	    return str.substr(0,index) + chr + str.substr(index+1);
+// }
    
-    console.log(answer);
-    console.log(emptyAnswer());
+    function arrToStr(arg) {
+        var y = "";
+        for(i=0; i < arg.length; i++){
+            y += arg[i];
+        }
+        return y;
+
+    }
+
+    function gameWin(){
+        
+    }
+
+    function guess(){
+        document.onkeyup = function(event) {
+        keyPress = event.key;
+            var itsCount = 0;
+            for (i=0; i < answer.length; i++){
+                if(keyPress == answer[i] || keyPress.toUpperCase() == answer[i]){
+                    emptyAnsArr[i] = answer[i];
+                    lettersGuessed += keyPress;
+                    
+                }
+                else{
+                    itsCount++;
+                    lettersGuessed += keyPress;
+                }
+            }
+            if(itsCount == answer.length){
+                guessesLeft--;
+            }
+            currentProg = arrToStr(emptyAnsArr);
+            if(currentProg == answer){
+                gameWin();
+            }
+            if(guessesLeft == 0){
+                gameOver();
+            }
+            console.log(currentProg);
+            console.log(guessesLeft);
+        }
+    }
+    
+
+    function gameOver(){
+        console.log("SORRY, YOU LOST. PLAY AGAIN?");
+    }
+
+    function gameWin(){
+        confirm("YOU WIN!!! Play again?");
+    }
+
+    function gameSetup(){
+        getNewAnswer(); //Get a new answer from the pool
+        emptyAns(); //Create an empty array with _ in place of letters
+        guessesLeft = 8; //Start game with 8 guesses
+        var currentProg = arrToStr(emptyAnsArr); //variable to hold current progress
+
+    }
     // function newGame(){
         
     // }
     
 
     //MAIN PROCESS
-    var answer = getNewAnswer();
-    var emptyAnswerStr = emptyAnswer();
-    if (guessesLeft > 0){
-        document.onkeyup = function(event) {
-            keyPress = event.key;
-            for (i=0; i < answer.length; i++){
-                if(keyPress == answer[i]){
-                    emptyAnswerStr[i] = keyPress;
-                    console.log(emptyAnswerStr);
-                }
-                else{
-                    guessesLeft--;
-                }
-            }
-        }
-    }
-    else{
-        function gameOver(){
+    //get a fresh answer for the game
+    // var answer = getNewAnswer();
+    //create the empty string to hold the guess progress
+    // var emptyAnsArr = empty();
+    
+    // var guessesLeft = 8;
 
+    // console.log(emptyAnswerStr);
+
+
+    gameSetup();
+    switch (guessesLeft){
+        case 0: gameOver();
+        default: 
+            document.onkeyup = function(event) {
+            guess();
         }
-    }
+    } 
+    
         
     
     
