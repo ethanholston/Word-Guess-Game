@@ -1,6 +1,7 @@
 #current-progress{
     letter-spacing: 3px;
-    font-size: 24px;
+    font-size: 48px;
+    font-weight: bold;
     text-align: center;
 }
 
@@ -8,5 +9,11 @@
     letter-spacing: 5px;
 }
 
+#new-game{
+    size: 48px;
+    color: red;
+}
+
+.
 
 

@@ -12,6 +12,7 @@ var emptyAnsArr = []; // array converting letters in answer to '_'
 var answer; // var to hold the correct answer
 var guessRight; //boolean to track if each guess is correct
 var wrongLetters; //incorrect letters already guessed to be displayed to the user
+var gameOverBool = false;
 
 //vars to replace text on page showing current progress
 var winsText = document.getElementById("win-count"); 
@@ -20,6 +21,7 @@ var guessesText = document.getElementById("guesses-left");
 var progText = document.getElementById("current-progress");
 var lettersText = document.getElementById("letters-guessed");
 var animate = document.getElementById("animation");
+var newGame = document.getElementById("new-game");
 
 // FUNCTIONS
 
@@ -51,18 +53,30 @@ function arrToStr(arg) {
 
 }
 
-function gameOver(){
-    alert("The correct answer is: " + answer);
+function gameLose(){
+    currentProg = "";
     losses++;
     lossText.innerHTML = losses;
-    gameSetup();
 }
 
 function gameWin(){
+    currentProg = "";
     wins++;
     winsText.innerHTML = wins;
     progText.innerHTML = currentProg;
-    this.setTimeout(gameSetup(), 5000);
+}
+
+function gameOver(){
+    gameOverBool = true;
+    if(currentProg == answer){
+        gameWin();
+        newGame.innerHTML = "You won! Click the New Game button to play again";
+    } else{
+        gameLose();
+        newGame.innerHTML = "You lost! Click the New Game button to play again";
+    }
+    
+
 }
 
 function gameSetup(){
@@ -72,73 +86,78 @@ function gameSetup(){
     currentProg = arrToStr(emptyAnsArr); //variable to hold current progress
     lettersGuessed = ""; //reset lettersGuessed
     wrongLetters = ""; //reset wrongLetters
+    gameOverBool = false;
     //update text on screen
     animate.innerHTML = "<img src='assets/images/newGame.png'/>";
     progText.innerHTML = currentProg; 
     lettersText.innerHTML = lettersGuessed;
     guessesText.innerHTML = guessesLeft;
+    winsText.innerHTML = wins;
+    lossText.innerHTML = losses;
+    newGame.innerHTML = "";
 }
 
 function animated(){
-    if(guessesLeft == 6){
-        animate.innerHTML = "<img src='assets/images/1.png'/>";
-    } else if(guessesLeft == 5){
-        animate.innerHTML = "<img src='assets/images/2.png'/>";
-    } else if(guessesLeft == 4){
-        animate.innerHTML = "<img src='assets/images/3.png'/>";
-    } else if(guessesLeft == 3){
-        animate.innerHTML = "<img src='assets/images/4.png'/>";
-    } else if(guessesLeft == 2){
-        animate.innerHTML = "<img src='assets/images/5.png'/>";
-    } else if(guessesLeft == 1){
-        animate.innerHTML = "<img src='assets/images/6.png'/>";
-    } else if(guessesLeft == 0){
-        animate.innerHTML = "<img src='assets/images/7.png'/>";
+    switch(guessesLeft){
+        case 0: animate.innerHTML = "<img src='assets/images/7.png'/>";
+        break;
+        case 1: animate.innerHTML = "<img src='assets/images/6.png'/>";
+        break;
+        case 2: animate.innerHTML = "<img src='assets/images/5.png'/>";
+        break;
+        case 3: animate.innerHTML = "<img src='assets/images/4.png'/>";
+        break;
+        case 4: animate.innerHTML = "<img src='assets/images/3.png'/>";
+        break;
+        case 5: animate.innerHTML = "<img src='assets/images/2.png'/>";
+        break;
+        case 6: animate.innerHTML = "<img src='assets/images/1.png'/>";
+        break;
+        case 7: animate.innerHTML = "<img src='assets/images/newGame.png'/>";
+        break;
     }
 }
 
 
 // takes key input, checks if guess is right or not and then checks for end game condition
 function guess(){
-    document.onkeyup = function(event) {
-    keyPress = event.key;
-        if (alphabet.indexOf(keyPress) >= 0){ 
-            keyPress = keyPress.toLowerCase();
-            if (lettersGuessed.indexOf(keyPress) == -1){
-                guessRight = false;
-                lettersGuessed += keyPress;
-                for (i=0; i < answer.length; i++){
-                    if(keyPress == answer[i] || keyPress.toUpperCase() == answer[i]){
-                        emptyAnsArr[i] = answer[i];  
-                        guessRight = true;              
-                    }
+        document.onkeyup = function(event) {
+        if(gameOverBool == false){ 
+            keyPress = event.key;
+                if (alphabet.indexOf(keyPress) >= 0){ 
+                    keyPress = keyPress.toLowerCase();
+                    if (lettersGuessed.indexOf(keyPress) == -1){
+                        guessRight = false;
+                        lettersGuessed += keyPress;
+                        for (i=0; i < answer.length; i++){
+                            if(keyPress == answer[i] || keyPress.toUpperCase() == answer[i]){
+                                emptyAnsArr[i] = answer[i];  
+                                guessRight = true;              
+                            }
 
+                        }
+                        if(guessRight == false){
+                            guessesLeft--;
+                            wrongLetters += keyPress;
+                            animated();
+                        }
+                        currentProg = arrToStr(emptyAnsArr);
+                        progText.innerHTML = currentProg;
+                        lettersText.innerHTML = wrongLetters;
+                        guessesText.innerHTML = guessesLeft;
+                        
+                    }
+                    else {
+                        alert("You already guessed that")
+                    }
                 }
-                if(guessRight == false){
-                    guessesLeft--;
-                    wrongLetters += keyPress;
-                    animated();
+                else {
+                    alert("Please choose a valid letter");
                 }
-                currentProg = arrToStr(emptyAnsArr);
-                progText.innerHTML = currentProg;
-                lettersText.innerHTML = wrongLetters;
-                guessesText.innerHTML = guessesLeft;
-                
-            }
-            else {
-                alert("You already guessed that")
-            }
+                if(currentProg == answer || guessesLeft == 0){
+                    gameOver();
+                }
         }
-        else {
-            alert("Please choose a valid letter");
-        }
-        if(currentProg == answer){
-            gameWin();
-        }
-        if(guessesLeft == 0){
-            gameOver();
-        }
-        
     }   
 }
 
