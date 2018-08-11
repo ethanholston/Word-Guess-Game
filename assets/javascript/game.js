@@ -74,10 +74,10 @@ function gameOver(){
     gameOverBool = true;
     if(currentProg == answer){
         gameWin();
-        newGame.innerHTML = "You won! Click the New Game button to play again";
+        newGame.innerHTML = "You won! Click 'New Game' to play again";
     } else{
         gameLose();
-        newGame.innerHTML = "You lost! Click the New Game button to play again";
+        newGame.innerHTML = "You lost! Click 'New Game' to play again";
     }
     
 
