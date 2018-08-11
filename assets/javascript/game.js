@@ -54,13 +54,11 @@ function arrToStr(arg) {
 }
 
 function gameLose(){
-    currentProg = "";
     losses++;
     lossText.innerHTML = losses;
 }
 
 function gameWin(){
-    currentProg = "";
     wins++;
     winsText.innerHTML = wins;
     progText.innerHTML = currentProg;
