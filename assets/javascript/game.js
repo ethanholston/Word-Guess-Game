@@ -56,6 +56,7 @@ function arrToStr(arg) {
 function gameLose(){
     losses++;
     lossText.innerHTML = losses;
+    progText.innerHTML = answer;
 }
 
 function gameWin(){
