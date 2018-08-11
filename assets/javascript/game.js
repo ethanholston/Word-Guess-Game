@@ -102,7 +102,7 @@ function gameSetup(){
     currentWordText.innerHTML = "Current word: ";
 }
 
-//replaces picture on incorrect guess
+//replaces picture on incorrect guess. causes page to flicker when image is replaced. Need to layer images and use z-index instead. 
 function animated(){
     switch(guessesLeft){
         case 0: animate.innerHTML = "<img src='assets/images/7.png'/>";
